@@ -8,9 +8,21 @@ from watchdog.events import FileSystemEventHandler, DirModifiedEvent, FileModifi
 
 source_dir = "/Users/artur/Downloads"
 dest_dir_sfx = "/Users/artur/Pictures/sound"
-dest_dir_music = "/Users/artur/Pictures/music"
+dest_dir_other = "/Users/artur/Pictures/other"
 dest_dir_video = "/Users/artur/Pictures/video"
 dest_dir_pictures = "/Users/artur/Pictures/pictures"
+dest_dir_dir = "/Users/artur/Pictures/dir"
+dest_dir_program = "/Users/artur/Pictures/program"
+dest_dir_document = "/Users/artur/Pictures/document"
+
+image_extensions = [".jpg", ".png", ".jpeg", ".gif", ".jpe", ".webp"]
+video_extensions = [".mov", ".mp4", ".mpg", ".mp4v", ".m4v", ".mpv"]
+audio_extensions = [".mp3", ".aac", ".m4a", ".wav", ".flac", ".wma"]
+document_extensions = [".pdf", ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx"]
+program_extensions = [".exe", ".bat", ".cmd", ".com", ".msi", ".app", ".dmg", ".sh", ".elf", ".jar", ".py"]
+dir_extensions = [".dir", ".zip", ".7z", ".rar", ".tar", ".tar.gz"]
+
+
 
 with os.scandir(source_dir) as entries:
     for entry in entries:
@@ -38,17 +50,26 @@ class MoverHandler(FileSystemEventHandler):
             for entry in entries:
                 name = entry.name
                 dest = source_dir
-                if name.endswith(".wav") or name.endswith(".mp3"):
-                    dest = dest_dir_sfx
-                    move(dest, entry, name)
-                elif name.endswith(".mov") or name.endswith(".mp4"):
-                    dest = dest_dir_video
-                    move(dest, entry, name)
-                elif name.endswith(".jpg") or name.endswith(".png") or name.endswith(".jpeg"):
+                if name.endswith(tuple(image_extensions)):
                     dest = dest_dir_pictures
                     move(dest, entry, name)
+                elif name.endswith(tuple(video_extensions)):
+                    dest = dest_dir_video
+                    move(dest, entry, name)
+                elif name.endswith(tuple(audio_extensions)):
+                    dest = dest_dir_sfx
+                    move(dest, entry, name)
+                elif name.endswith(tuple(program_extensions)):
+                    dest = dest_dir_program
+                    move(dest, entry, name)
+                elif name.endswith(tuple(document_extensions)):
+                    dest = dest_dir_document
+                    move(dest, entry, name)
+                elif name.endswith(tuple(dir_extensions)):
+                    dest = dest_dir_dir
+                    move(dest, entry, name)
                 else:
-                    dest = dest_dir_music
+                    dest = dest_dir_other
                     move(dest, entry, name)
 
 
